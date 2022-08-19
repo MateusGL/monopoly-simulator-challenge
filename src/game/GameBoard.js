@@ -1,6 +1,6 @@
 class GameBoard {
     constructor(players) {
-        this.proprietys = gerarProprietys(20);
+        this.properties = generateProprieties(20);
         this.players = players;
         this.winner = null;
         this.metrics = {
@@ -40,18 +40,18 @@ class GameBoard {
     }
 
     hasWinner() {
-        const filtredPlayers = this.metrics.playing();
-        if (filtredPlayers.length == 1) {
-            this.winner = filtredPlayers[0];
+        const filtered = this.metrics.playing();
+        if (filtered.length == 1) {
+            this.winner = filtered[0];
             return true;
         }
     }
 
     moveAction(position, player, turn) {
-        const { owner, rent, value } = this.proprietys[position];
+        const { owner, rent, value } = this.properties[position];
         if (owner == null) {
             if (player.action(rent, value)) {
-                this.proprietys[position].owner = turn;
+                this.properties[position].owner = turn;
                 player.money -= value;
             } else {
                 player.money -= rent;
@@ -65,14 +65,14 @@ class GameBoard {
 
     ifPlayerLost(player, turn) {
         if (player.money < 0) {
-            this.releaseProprietys(turn);
+            this.releaseProprieties(turn);
         }
     }
 
-    releaseProprietys(turn) {
-        this.proprietys.forEach(propriety => {
-            if (propriety.owner == turn) {
-                propriety.owner = null;
+    releaseProprieties(turn) {
+        this.properties.forEach(propertie => {
+            if (propertie.owner == turn) {
+                propertie.owner = null;
             }
         });
     }
@@ -87,17 +87,17 @@ class GameBoard {
     }
 }
 
-function gerarProprietys(length) {
-    const proprietys = []
+function generateProprieties(length) {
+    const properties = []
     for (let index = 0; index < length; index++) {
         const value = Math.floor(Math.random() * 300 + 1)
-        proprietys.push({
+        properties.push({
             value,
             rent: Math.floor(value * 0.2),
             owner: null
         })
     }
-    return proprietys
+    return properties
 }
 
 module.exports = GameBoard
