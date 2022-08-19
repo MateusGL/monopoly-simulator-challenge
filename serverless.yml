@@ -1,0 +1,14 @@
+service: monopoly-challenge
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  simulator:
+    handler: src/handler.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
